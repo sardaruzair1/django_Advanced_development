@@ -47,11 +47,10 @@ def register(request):
        if password == password2:
            if User.objects.filter(email=email).exists():
                messages.info(request, 'Email Already In Used')
-               return render(request,'register.html')
-            #    return redirect('register')
+               return redirect('register')
            elif User.objects.filter(username=username).exists():
                messages.info(request, 'Username Already In Used')
-               return render(request,'register.html')
+               return redirect('register')
            else:
                user = User.objects.create_user(username=username, email=email, password=password)
                user.save()
@@ -60,3 +59,24 @@ def register(request):
         #     messages.info(request,'register')  
     else:        
         return render(request,'register.html')
+    
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = auth.authenticate(username = username, password=password)
+        
+        if user is not None:
+            auth.login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request,'credeantials invalid')
+            return redirect('login')
+    else:    
+       return render(request , 'login.html')  
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
