@@ -33,7 +33,7 @@ from django.contrib import messages
     
 #     Features = [Feature1,Feature2,Feature3,Feature4]
 def index(request):
-    Features = Feature.objects.all()
+    Features = Feature.objects.all()     
     return render(request,'index.html',{'Features':Features})
 
 def register(request):
@@ -80,3 +80,10 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def post(request,pk):
+    return render(request , 'post.html',{'pk':pk})
+
+def counter(request):
+    posts = ['1','2','3','4','5','sardar','uzair']
+    return render(request,'counter.html',{'posts':posts})    
