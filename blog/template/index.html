@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 20px;
+  background: #f1f1f1;
+}
+
+.header {
+  padding: 2px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+.leftcolumn {   
+  float: left;
+  width: 100%;
+}
+
+.card {
+   background-color: white;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+.danger{
+  color: rgb(229, 8, 8);
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/">
+    <h2>Sardar Blogs</h2>
+    {% if user.is_authenticated %}
+    <h6>Welcome , {{ user.username }}</h6>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <h6><a href="http://127.0.0.1:8000/logout/">Logout</a></h6>
+    {% else %}
+    <h6><a href="http://127.0.0.1:8000/login/">login</a></h6>
+    {% endif %}
+  </a>
+  {% if user.is_authenticated != True %}
+    <small class="danger">NOTE: "must login to read full blog  "</small>
+  {% endif %}
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    {% for post in Posts reversed %}
+    <div class="card">
+
+      {% if user.is_authenticated %}
+      <a style="text-decoration: none; color: black;" href="/post/{{post.id}}">
+      {% endif %}
+        <h2>{{post.title}}</h2>
+        <h5>{{post.created_at}}</h5>
+        <p>{{post.body|truncatewords:20}}</p>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>
